@@ -36,8 +36,3 @@ class Room:
     @classmethod
     def from_dict(cls,room:dict):
         return cls(room.get("room_id"),room.get("name"),room.get("difficulty"),room.get("duration"),room.get("min_players"),room.get("max_players"),room.get("price_per_player"),room.get("is_active"))
-    
-    
-room1 = Room(1,"gad","easy",60,1,1,1,True)   
-print(room1.to_dict())
-print(room1.from_dict(room1.to_dict())) 

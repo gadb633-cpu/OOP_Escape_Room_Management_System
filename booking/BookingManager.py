@@ -1,14 +1,19 @@
 from data_manager.data_manager import DataManager
 from calculate_price.PricingManager import PricingManager
+from rooms.room import Room
+from booking.Booking import Booking
+from helper.inputs import UserInputs
 
 class BookingManager:
     def __init__(self):
-        self.rooms =DataManager.load_rooms()
-        self.bookings =DataManager.load_bookings()
+        self.rooms =[Room.from_dict(room) for room in DataManager.load_rooms()]
+        self.bookings =[Booking.from_dict(booking) for booking in DataManager.load_bookings()]
         self.pricing_manager = PricingManager()
-
-    def create_booking(customer_name, room_id, booking_date, start_time, players):
-        pass
+    
+    def create_booking(self,customer_name, room_id, booking_date, start_time, players,total_price):
+        new_booking = Booking.to_dict(len(self.bookings)+1,customer_name,room_id,booking_date,start_time,players,total_price,status=True,cancellation_fee=0.0)
+        new_booking_object= Booking.from_dict(new_booking)
+        self.bookings.append(new_booking_object)
 
     def get_booking(self,booking_id):
         pass
@@ -27,3 +32,4 @@ class BookingManager:
 
     def cancel_booking(self,booking_id, current_datetime):
         pass
+    

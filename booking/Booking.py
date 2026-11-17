@@ -8,7 +8,7 @@ class Booking:
         self.players =players 
         self.total_price =total_price 
         self.status =status 
-        self.cancellation_fee =cancellation_fee 
+        self.cancellation_fee =cancellation_fee
 
     def cancel(self,fee):
         self.status = "Cancelled"

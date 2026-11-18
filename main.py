@@ -14,17 +14,6 @@ class EscapeRoomSystem:
         self.bookings =self.data_manager.load_bookings()
         self.report_manager = ReportManager(self.rooms,self.bookings)
     
-    def get_info_order(self):
-        status_loop= True
-        while status_loop:
-            customer_name = UserInputs.get_str("enter your name")
-            room_id = f"R{UserInputs.get_num("enter room_id"):03d}"
-            players = UserInputs.get_num("enter Number_of_people")
-            booking_date = UserInputs.get_str("enter booking_date")
-            start_time = UserInputs.get_str("enter start_time")
-            status_loop = False
-        return [customer_name,room_id,booking_date,start_time,players]
-    
     def choice_update(self,the_order,the_room,orders):
         status_loop = True
         while status_loop:
@@ -74,7 +63,7 @@ class EscapeRoomSystem:
                 case 1:
                     RoomManager().Room_Management()
                 case 2:
-                    pass
+                    BookingManager().booking_management()
                 case 3:
                     pass
                 case 4:

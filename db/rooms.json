@@ -1,7 +1,7 @@
 [
     {
         "room_id": "R001",
-        "name": "The Lab",
+        "name": "ytfd",
         "difficulty": "Easy",
         "duration": 60,
         "min_players": 2,
@@ -17,7 +17,7 @@
         "min_players": 3,
         "max_players": 6,
         "price_per_player": 120,
-        "is_active": true
+        "is_active": false
     },
     {
         "room_id": "R003",

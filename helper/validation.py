@@ -1,6 +1,5 @@
 from datetime import datetime
 from calculate_price.PricingManager import PricingManager
-
 class Validation:
     @staticmethod
     def val_not_empty(name):
@@ -24,17 +23,18 @@ class Validation:
             return True
         return False
     @staticmethod
-    def check_format_input(start_time,format):
+    def check_format_input(input,format):
         try:
-            time = datetime.strptime(start_time,format)
+            time = datetime.strptime(input,format)
             return True
         except ValueError:
             print(f"only this format {format}")
             return False
     @staticmethod
-    def is_have_anther_order(orders,room,room_id,booking_date,list_time:list):
+    def is_have_anther_order(bookings,room,room_id,booking_date,list_time:list):
         correct_min_new_order = (list_time[0]*60)+list_time[1]
-        for order in orders:
+        for booking in bookings:
+            order = booking.to_dict()
             if order["room_id"] == room_id:
                 if order["booking_date"] == booking_date:
                     if order["status"] =="Active":
@@ -65,12 +65,8 @@ class Validation:
             return False
         return True
     @staticmethod
-    def val_info_order(rooms,room_id,number_of_people):
-        room = Validation.check_is_room_exist(rooms,room_id)
-        if room == False:
-            print("room id not found!")
-            return False
-        elif Validation.check_is_available(room) == False:
+    def val_info_order(room,room_id,number_of_people):
+        if Validation.check_is_available(room) == False:
             print("the room not available !")
             return False
         elif Validation.check_num_people(room,number_of_people) == False:
@@ -94,3 +90,12 @@ class Validation:
             if room["room_id"] == room_id:
                 return room
         return  False
+    @staticmethod
+    def check_difficulty(UserInputs):
+        status_loop = True
+        while status_loop:
+            difficulty=UserInputs.get_str("enter difficulty [Easy,Medium,Hard]")
+            if difficulty.lower() in ["easy","medium","hard"]:
+                status_loop = False
+                return difficulty
+            print("only [Easy,Medium,Hard] !!!")

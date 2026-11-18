@@ -59,6 +59,8 @@ class BookingManager:
     
     def create_booking(self,customer_name, room_id, booking_date, start_time, players):
         room = RoomManager().get_room(room_id)
+        if not room:
+            raise ValueError("room not found!!")
         if not Validation.check_is_available(room):
             raise ValueError(f"room {room_id} not available!")
         if not Validation.check_num_people(room,players):

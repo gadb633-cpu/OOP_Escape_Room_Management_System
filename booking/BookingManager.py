@@ -1,28 +1,20 @@
 from data_manager.data_manager import DataManager
 from calculate_price.PricingManager import PricingManager
-from rooms.room import Room
-from booking.Booking import Booking
-from helper.inputs import UserInputs
 from helper.validation import Validation
+from rooms.roomManager import RoomManager
 
 class BookingManager:
     def __init__(self):
-        self.rooms =DataManager.load_rooms()
-        self.bookings =DataManager.load_bookings()
+        self.rooms =DataManager("./db/rooms.json","./db/bookings.json").load_rooms()
+        self.bookings =DataManager("./db/rooms.json","./db/bookings.json").load_bookings()
         self.pricing_manager = PricingManager()
 
     def get_booking_id(self):
         booking_id = len(self.bookings) + 1
         return f"B{booking_id:03d}"
-    
-    def get_room(self,room_id):
-        room = self.rooms.get(room_id)
-        if not room:
-            raise ValueError(f"{room_id} not found!")
-        return room
      
     def create_booking(self,customer_name, room_id, booking_date, start_time, players):
-        room = self.get_room(room_id)
+        room = RoomManager.get_room(room_id)
         if not Validation.check_is_available(room):
             raise ValueError(f"room {room_id} not available!")
         if not Validation.check_num_people(room,players):
@@ -48,15 +40,14 @@ class BookingManager:
         "players": players,
         "total_price": PricingManager.calculate_price(room,players,booking_date),
         "status": "Active",
-        "cancellation_fee": 0.0
-    }
+        "cancellation_fee": 0.0}
         
         
     def get_booking(self, booking_id: str):
-        booking = self.bookings.get(booking_id)
-        if not booking:
-            raise ValueError(f"order {booking_id} not found!")
-        return booking
+        for booking in self.bookings:
+            if booking.to_dict()["booking_id"] == booking_id:
+                return booking.to_dict()
+        raise ValueError(f"order {booking_id} not found!")
     
     def get_customer_bookings(self,customer_name):
         for booking in self.bookings:

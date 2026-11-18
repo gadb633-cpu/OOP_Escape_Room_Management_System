@@ -4,15 +4,16 @@ from helper.inputs import UserInputs
 from calculate_price.PricingManager import PricingManager
 from booking.BookingManager import BookingManager
 from Report.ReportManager import ReportManager
-
+from display.shaw_menus import Shaw_menus
+from rooms.roomManager import RoomManager
 class EscapeRoomSystem:
-    def __init__(self,data_manager,booking_manager,report_manager,rooms,bookings):
-        self.data_manager =DataManager()
+    def __init__(self):
+        self.data_manager =DataManager("./db/rooms.json","./db/bookings.json")
         self.booking_manager = BookingManager()
-        self.report_manager = ReportManager()
-        self.rooms=DataManager.load_rooms()
-        self.bookings =DataManager.load_bookings()
-
+        self.rooms=self.data_manager.load_rooms()
+        self.bookings =self.data_manager.load_bookings()
+        self.report_manager = ReportManager(self.rooms,self.bookings)
+    
     def get_info_order(self):
         status_loop= True
         while status_loop:
@@ -60,19 +61,30 @@ class EscapeRoomSystem:
                 case _:
                     print("only in [booking_date,start_time,players] !!!")  
     
-    def shaw_main_menu():
-        print('''
-        =========================================
-            Escape Room Management System
-        =========================================
-
-        1. Rooms
-        2. Orders
-        3. Report
-        4. Exit
-        ''')
+    
     def save_data(self):
         pass
 
     def run(self):
-        pass   
+        status_loop = True
+        while status_loop:
+            Shaw_menus.shaw_main_menu()
+            choice = UserInputs.get_num("enter your choice (1-4)")
+            match choice:
+                case 1:
+                    RoomManager().Room_Management()
+                case 2:
+                    pass
+                case 3:
+                    pass
+                case 4:
+                    status_loop = False  
+                case _:
+                    print("choice only between 1-4")
+
+
+def main():
+    main_system = EscapeRoomSystem()
+    main_system.run()
+
+main()

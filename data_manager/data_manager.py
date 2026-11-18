@@ -1,10 +1,16 @@
 import json
 from booking.Booking import Booking
 from rooms.room import Room
+
 class DataManager:
-    def __init__(self,rooms_file ,bookings_file ):
+    # def __new__(cls,):
+    #     if not hasattr(cls, 'instance'):
+    #         cls.instance = super().__new__(cls)
+    #     return cls.instance
+    
+    def __init__(self,rooms_file ,bookings_file):
         self.rooms_file =rooms_file 
-        self.bookings_file =bookings_file 
+        self.bookings_file =bookings_file
 
     def load_rooms(self):
         try:
@@ -25,11 +31,13 @@ class DataManager:
             return [] 
 
     def save_rooms(self,rooms):
+        dict_rooms = [room.to_dict() for room in rooms]
         with open(self.rooms_file, "w") as file:
-            data = json.dumps(rooms,indent=4)
+            data = json.dumps(dict_rooms,indent=4)
             file.write(data)
 
     def save_bookings(self,bookings):
+        dict_bookings = [booking.to_dict() for booking in bookings]
         with open(self.bookings_file, "w") as file:
-            data = json.dumps(bookings,indent=4)
+            data = json.dumps(dict_bookings,indent=4)
             file.write(data)

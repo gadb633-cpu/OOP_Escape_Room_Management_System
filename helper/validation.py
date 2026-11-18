@@ -1,6 +1,5 @@
 from datetime import datetime
 from calculate_price.PricingManager import PricingManager
-
 class Validation:
     @staticmethod
     def val_not_empty(name):
@@ -91,3 +90,12 @@ class Validation:
             if room["room_id"] == room_id:
                 return room
         return  False
+    @staticmethod
+    def check_difficulty(UserInputs):
+        status_loop = True
+        while status_loop:
+            difficulty=UserInputs.get_str("enter difficulty [Easy,Medium,Hard]")
+            if difficulty.lower() in ["easy","medium","hard"]:
+                status_loop = False
+                return difficulty
+            print("only [Easy,Medium,Hard] !!!")
